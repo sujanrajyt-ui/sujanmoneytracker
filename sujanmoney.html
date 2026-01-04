@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+]<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sujan's Spending Tracker</title>
+    <title>Sujan's Multi-User Spending Tracker</title>
     <style>
         * {
             margin: 0;
@@ -19,23 +19,46 @@
         }
 
         .container {
-            max-width: 400px;
-            margin: 0 auto;
+            max-width: 430px;
+            margin: 0 auto 40px auto;
         }
 
         h1 {
             color: white;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 6px;
             font-size: 24px;
+        }
+
+        .tagline {
+            color: rgba(255,255,255,0.8);
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 13px;
         }
 
         .card {
             background: white;
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border-radius: 18px;
+            padding: 16px 18px;
+            margin-bottom: 12px;
+            box-shadow: 0 8px 22px rgba(0,0,0,0.18);
+        }
+
+        .card-header {
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 15px;
+            color: #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .small-note {
+            font-size: 11px;
+            color: #888;
+            margin-top: 4px;
         }
 
         .budget-display {
@@ -44,11 +67,11 @@
 
         .budget-display .label {
             color: #666;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .budget-display .amount {
-            font-size: 36px;
+            font-size: 32px;
             font-weight: bold;
             color: #667eea;
         }
@@ -61,7 +84,7 @@
         .stat-box {
             flex: 1;
             text-align: center;
-            padding: 15px;
+            padding: 12px;
             border-radius: 15px;
         }
 
@@ -74,12 +97,12 @@
         }
 
         .stat-box .stat-label {
-            font-size: 12px;
+            font-size: 11px;
             color: #666;
         }
 
         .stat-box .stat-amount {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
         }
 
@@ -92,19 +115,19 @@
         }
 
         .progress-section {
-            margin-top: 10px;
+            margin-top: 6px;
         }
 
         .progress-header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 14px;
+            margin-bottom: 5px;
+            font-size: 13px;
             color: #666;
         }
 
         .progress-bar {
-            height: 20px;
+            height: 18px;
             background: #e0e0e0;
             border-radius: 10px;
             overflow: hidden;
@@ -113,16 +136,17 @@
         .progress-fill {
             height: 100%;
             border-radius: 10px;
-            transition: all 0.5s ease;
+            transition: all 0.4s ease;
         }
 
         .status-card {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             color: white;
-            border-radius: 20px;
-            padding: 20px;
+            border-radius: 18px;
+            padding: 16px;
+            margin-top: 4px;
         }
 
         .status-card.green {
@@ -138,31 +162,31 @@
         }
 
         .status-emoji {
-            font-size: 40px;
+            font-size: 28px;
         }
 
         .status-text {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
         }
 
         .input-group {
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .input-group label {
             display: block;
-            margin-bottom: 5px;
-            color: #666;
-            font-size: 14px;
+            margin-bottom: 4px;
+            color: #555;
+            font-size: 13px;
         }
 
         .input-group input {
             width: 100%;
-            padding: 15px;
+            padding: 10px 12px;
             border: 2px solid #e0e0e0;
             border-radius: 10px;
-            font-size: 16px;
+            font-size: 14px;
             outline: none;
         }
 
@@ -172,13 +196,13 @@
 
         .btn {
             width: 100%;
-            padding: 15px;
+            padding: 11px;
             border: none;
             border-radius: 10px;
-            font-size: 16px;
-            font-weight: bold;
+            font-size: 14px;
+            font-weight: 600;
             cursor: pointer;
-            margin-top: 10px;
+            margin-top: 8px;
         }
 
         .btn-primary {
@@ -196,17 +220,24 @@
             color: white;
         }
 
+        .btn-small {
+            width: auto;
+            padding: 5px 10px;
+            font-size: 11px;
+            margin-top: 0;
+        }
+
         .expenses-title {
             color: white;
-            margin: 20px 0 10px 0;
-            font-size: 18px;
+            margin: 18px 0 8px 0;
+            font-size: 16px;
         }
 
         .expense-item {
             background: white;
             border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 10px;
+            padding: 12px 14px;
+            margin-bottom: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -214,23 +245,23 @@
         }
 
         .expense-info h3 {
-            font-size: 16px;
+            font-size: 14px;
             color: #333;
         }
 
         .expense-info p {
-            font-size: 12px;
+            font-size: 11px;
             color: #999;
         }
 
         .expense-right {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .expense-amount {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             color: #e74c3c;
         }
@@ -238,107 +269,350 @@
         .delete-btn {
             background: #ffe5e5;
             border: none;
-            width: 35px;
-            height: 35px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 16px;
         }
 
         .no-expenses {
             text-align: center;
             color: rgba(255,255,255,0.7);
-            padding: 30px;
+            padding: 20px;
+            font-size: 14px;
         }
 
         .hidden {
             display: none;
+        }
+
+        .profiles-list {
+            margin-top: 6px;
+            max-height: 120px;
+            overflow-y: auto;
+            border-top: 1px solid #eee;
+            padding-top: 6px;
+        }
+
+        .profile-item {
+            font-size: 12px;
+            padding: 3px 0;
+            color: #444;
+        }
+
+        .profile-item span {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .current-user {
+            font-size: 12px;
+            color: #555;
+            margin-bottom: 6px;
+        }
+
+        .current-user span {
+            font-weight: bold;
+            color: #333;
+        }
+
+        details summary {
+            cursor: pointer;
+            font-size: 13px;
+            color: #333;
+        }
+
+        details[open] summary {
+            margin-bottom: 6px;
+        }
+
+        .top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top-row small {
+            font-size: 11px;
+            color: #eee;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>💰 Sujan's Spending Tracker</h1>
+        <p class="tagline">Multi-user version with admin & login</p>
 
-        <!-- Budget Display -->
-        <div class="card budget-display">
-            <p class="label">This Month's Pocket Money</p>
-            <p class="amount" id="budgetAmount">₹0</p>
-            <button class="btn btn-primary" onclick="setBudget()">Set Pocket Money</button>
-        </div>
-
-        <!-- Stats -->
-        <div class="stats">
-            <div class="card stat-box spent">
-                <p class="stat-label">💸 Spent</p>
-                <p class="stat-amount" id="spentAmount">₹0</p>
-            </div>
-            <div class="card stat-box remaining">
-                <p class="stat-label">💵 Remaining</p>
-                <p class="stat-amount" id="remainingAmount">₹0</p>
-            </div>
-        </div>
-
-        <!-- Progress -->
-        <div class="card">
-            <div class="progress-section">
-                <div class="progress-header">
-                    <span>Budget Remaining</span>
-                    <span id="percentage">0%</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill" style="width: 0%; background: #27ae60;"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Status -->
-        <div class="status-card green" id="statusCard">
-            <span class="status-emoji" id="statusEmoji">😊</span>
-            <span class="status-text" id="statusText">Set your pocket money to start!</span>
-        </div>
-
-        <!-- Add Expense -->
-        <div class="card" style="margin-top: 15px;">
-            <div class="input-group">
-                <label>What did you spend on?</label>
-                <input type="text" id="expenseDesc" placeholder="e.g., Food, Transport, Shopping">
+        <!-- LOGIN CARD -->
+        <div class="card" id="loginCard">
+            <div class="card-header">
+                <span>🔐 Login</span>
             </div>
             <div class="input-group">
-                <label>Amount (₹)</label>
-                <input type="number" id="expenseAmount" placeholder="Enter amount">
+                <label>Enter your Name or ID</label>
+                <input type="text" id="loginIdOrName" placeholder="e.g., sujan01 or Sujan">
             </div>
-            <button class="btn btn-primary" onclick="addExpense()">➕ Add Expense</button>
+            <button class="btn btn-primary" onclick="loginUser()">Login</button>
+            <p class="small-note">Ask the admin for your ID. You can also log in with your exact name.</p>
         </div>
 
-        <!-- Expenses List -->
-        <h2 class="expenses-title">📝 Recent Expenses</h2>
-        <div id="expensesList">
-            <p class="no-expenses">No expenses yet!</p>
+        <!-- ADMIN CARD -->
+        <div class="card" id="adminCard">
+            <details>
+                <summary><strong>🛠 Admin: Manage Profiles</strong></summary>
+                <div style="margin-top: 8px;">
+                    <div class="input-group">
+                        <label>Profile ID (unique)</label>
+                        <input type="text" id="adminProfileId" placeholder="e.g., user001">
+                    </div>
+                    <div class="input-group">
+                        <label>Profile Name</label>
+                        <input type="text" id="adminProfileName" placeholder="e.g., Sujan">
+                    </div>
+                    <button class="btn btn-secondary" onclick="createProfile()">Create Profile</button>
+
+                    <div class="profiles-list" id="profilesList">
+                        <!-- Profiles will be listed here -->
+                    </div>
+
+                    <p class="small-note">All data is stored on this device only (localStorage).</p>
+                </div>
+            </details>
         </div>
 
-        <!-- Reset Button -->
-        <button class="btn btn-danger" onclick="resetAll()" style="margin-top: 20px;">🔄 Reset Everything</button>
+        <!-- MAIN APP SECTION (shown after login) -->
+        <div id="appSection" class="hidden">
+            <div class="card">
+                <div class="top-row">
+                    <div class="current-user">
+                        Logged in as: <span id="currentUserName"></span> (<span id="currentUserId"></span>)
+                    </div>
+                    <button class="btn btn-secondary btn-small" onclick="logoutUser()">Logout</button>
+                </div>
+
+                <!-- Budget Display -->
+                <div class="card budget-display" style="box-shadow:none;padding:10px 0 0 0;">
+                    <p class="label">This Month's Pocket Money</p>
+                    <p class="amount" id="budgetAmount">₹0</p>
+                    <button class="btn btn-primary" onclick="setBudget()">Set Pocket Money</button>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats">
+                <div class="card stat-box spent">
+                    <p class="stat-label">💸 Spent</p>
+                    <p class="stat-amount" id="spentAmount">₹0</p>
+                </div>
+                <div class="card stat-box remaining">
+                    <p class="stat-label">💵 Remaining</p>
+                    <p class="stat-amount" id="remainingAmount">₹0</p>
+                </div>
+            </div>
+
+            <!-- Progress -->
+            <div class="card">
+                <div class="progress-section">
+                    <div class="progress-header">
+                        <span>Budget Remaining</span>
+                        <span id="percentage">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill" style="width: 0%; background: #27ae60;"></div>
+                    </div>
+                </div>
+                <div class="status-card green" id="statusCard">
+                    <span class="status-emoji" id="statusEmoji">😊</span>
+                    <span class="status-text" id="statusText">Set your pocket money to start!</span>
+                </div>
+            </div>
+
+            <!-- Add Expense -->
+            <div class="card" style="margin-top: 8px;">
+                <div class="card-header">
+                    <span>➕ Add Expense</span>
+                </div>
+                <div class="input-group">
+                    <label>What did you spend on?</label>
+                    <input type="text" id="expenseDesc" placeholder="e.g., Food, Transport, Shopping">
+                </div>
+                <div class="input-group">
+                    <label>Amount (₹)</label>
+                    <input type="number" id="expenseAmount" placeholder="Enter amount">
+                </div>
+                <button class="btn btn-primary" onclick="addExpense()">Add Expense</button>
+            </div>
+
+            <!-- Expenses List -->
+            <h2 class="expenses-title">📝 Recent Expenses</h2>
+            <div id="expensesList">
+                <p class="no-expenses">No expenses yet!</p>
+            </div>
+
+            <!-- Reset Button -->
+            <button class="btn btn-danger" onclick="resetAll()" style="margin-top: 14px;">🔄 Reset This Profile</button>
+        </div>
     </div>
 
     <script>
-        // Load data from localStorage
-        let budget = parseFloat(localStorage.getItem('sujan_budget')) || 0;
-        let expenses = JSON.parse(localStorage.getItem('sujan_expenses')) || [];
+        // ---- DATA MODEL ----
+        // profilesIndex: list of { id, name }
+        // each profile data stored as key: 'sujan_profile_' + id
+        // value: { id, name, budget, expenses: [ {id, desc, amount, date} ] }
 
-        // Initialize
-        updateUI();
+        let profilesIndex = JSON.parse(localStorage.getItem('sujan_profiles_index')) || [];
+        let currentProfileId = null;
+        let budget = 0;
+        let expenses = [];
 
+        // --- INITIAL SETUP ---
+        refreshProfilesList();
+        // appSection stays hidden until login
+
+        // --- ADMIN: CREATE PROFILE ---
+        function createProfile() {
+            const idInput = document.getElementById('adminProfileId');
+            const nameInput = document.getElementById('adminProfileName');
+
+            const id = idInput.value.trim();
+            const name = nameInput.value.trim();
+
+            if (!id || !name) {
+                alert('Please enter both Profile ID and Name.');
+                return;
+            }
+
+            if (profilesIndex.some(p => p.id.toLowerCase() === id.toLowerCase())) {
+                alert('This Profile ID already exists. Choose another.');
+                return;
+            }
+
+            const profile = {
+                id: id,
+                name: name,
+                budget: 0,
+                expenses: []
+            };
+
+            profilesIndex.push({ id: id, name: name });
+            saveProfilesIndex();
+            localStorage.setItem('sujan_profile_' + id, JSON.stringify(profile));
+
+            idInput.value = '';
+            nameInput.value = '';
+            refreshProfilesList();
+            alert('Profile created: ' + name + ' (ID: ' + id + ')');
+        }
+
+        function saveProfilesIndex() {
+            localStorage.setItem('sujan_profiles_index', JSON.stringify(profilesIndex));
+        }
+
+        function refreshProfilesList() {
+            const listDiv = document.getElementById('profilesList');
+            if (!listDiv) return;
+
+            if (!profilesIndex || profilesIndex.length === 0) {
+                listDiv.innerHTML = '<p class="small-note">No profiles yet. Create one above.</p>';
+                return;
+            }
+
+            listDiv.innerHTML = profilesIndex.map(p =>
+                `<div class="profile-item">
+                    <span>${p.id}</span> — ${p.name}
+                </div>`
+            ).join('');
+        }
+
+        // --- LOGIN / LOGOUT ---
+        function loginUser() {
+            const input = document.getElementById('loginIdOrName').value.trim();
+            if (!input) {
+                alert('Please enter your name or ID.');
+                return;
+            }
+
+            if (!profilesIndex || profilesIndex.length === 0) {
+                alert('No profiles found. Admin must create one first.');
+                return;
+            }
+
+            // Try matching by ID first
+            let match = profilesIndex.find(p => p.id.toLowerCase() === input.toLowerCase());
+            // If not found, try by Name
+            if (!match) {
+                match = profilesIndex.find(p => p.name.toLowerCase() === input.toLowerCase());
+            }
+
+            if (!match) {
+                alert('No profile found with that name or ID.');
+                return;
+            }
+
+            const raw = localStorage.getItem('sujan_profile_' + match.id);
+            if (!raw) {
+                alert('Profile data missing or corrupted.');
+                return;
+            }
+
+            const profile = JSON.parse(raw);
+            currentProfileId = profile.id;
+            budget = profile.budget || 0;
+            expenses = profile.expenses || [];
+
+            document.getElementById('currentUserName').textContent = profile.name;
+            document.getElementById('currentUserId').textContent = profile.id;
+
+            document.getElementById('appSection').classList.remove('hidden');
+            document.getElementById('loginIdOrName').value = '';
+
+            updateUI();
+        }
+
+        function logoutUser() {
+            currentProfileId = null;
+            budget = 0;
+            expenses = [];
+            document.getElementById('appSection').classList.add('hidden');
+        }
+
+        // --- SAVE CURRENT PROFILE DATA ---
+        function saveCurrentProfile() {
+            if (!currentProfileId) return;
+
+            const meta = profilesIndex.find(p => p.id === currentProfileId);
+            const name = meta ? meta.name : 'Unknown';
+
+            const profile = {
+                id: currentProfileId,
+                name: name,
+                budget: budget,
+                expenses: expenses
+            };
+            localStorage.setItem('sujan_profile_' + currentProfileId, JSON.stringify(profile));
+        }
+
+        // --- MAIN FUNCTIONS (per profile) ---
         function setBudget() {
+            if (!currentProfileId) {
+                alert('Please login first.');
+                return;
+            }
             const amount = prompt('Enter your pocket money for this month:');
             if (amount && !isNaN(amount) && parseFloat(amount) > 0) {
                 budget = parseFloat(amount);
-                localStorage.setItem('sujan_budget', budget);
+                saveCurrentProfile();
                 updateUI();
             }
         }
 
         function addExpense() {
+            if (!currentProfileId) {
+                alert('Please login first.');
+                return;
+            }
+
             const desc = document.getElementById('expenseDesc').value.trim();
             const amount = parseFloat(document.getElementById('expenseAmount').value);
 
@@ -359,8 +633,8 @@
                 id: Date.now(),
                 desc: desc,
                 amount: amount,
-                date: new Date().toLocaleDateString('en-IN', { 
-                    day: 'numeric', 
+                date: new Date().toLocaleDateString('en-IN', {
+                    day: 'numeric',
                     month: 'short',
                     hour: '2-digit',
                     minute: '2-digit'
@@ -368,7 +642,7 @@
             };
 
             expenses.unshift(expense);
-            localStorage.setItem('sujan_expenses', JSON.stringify(expenses));
+            saveCurrentProfile();
 
             document.getElementById('expenseDesc').value = '';
             document.getElementById('expenseAmount').value = '';
@@ -377,39 +651,43 @@
         }
 
         function deleteExpense(id) {
+            if (!currentProfileId) return;
             if (confirm('Delete this expense?')) {
                 expenses = expenses.filter(e => e.id !== id);
-                localStorage.setItem('sujan_expenses', JSON.stringify(expenses));
+                saveCurrentProfile();
                 updateUI();
             }
         }
 
         function resetAll() {
-            if (confirm('This will delete all your data. Are you sure?')) {
+            if (!currentProfileId) return;
+            if (confirm('This will clear this profile\'s budget and expenses. Continue?')) {
                 budget = 0;
                 expenses = [];
-                localStorage.removeItem('sujan_budget');
-                localStorage.removeItem('sujan_expenses');
+                saveCurrentProfile();
                 updateUI();
             }
         }
 
+        // --- UPDATE UI ---
         function updateUI() {
+            if (!currentProfileId) return;
+
             const totalSpent = expenses.reduce((sum, e) => sum + e.amount, 0);
             const remaining = budget - totalSpent;
             const percentage = budget > 0 ? (remaining / budget) * 100 : 0;
 
-            // Update amounts
+            // Amounts
             document.getElementById('budgetAmount').textContent = '₹' + budget.toFixed(0);
             document.getElementById('spentAmount').textContent = '₹' + totalSpent.toFixed(0);
             document.getElementById('remainingAmount').textContent = '₹' + remaining.toFixed(0);
             document.getElementById('percentage').textContent = percentage.toFixed(0) + '%';
 
-            // Update progress bar
+            // Progress bar
             const progressFill = document.getElementById('progressFill');
             progressFill.style.width = Math.max(0, Math.min(100, percentage)) + '%';
 
-            // Update status
+            // Status
             const statusCard = document.getElementById('statusCard');
             const statusEmoji = document.getElementById('statusEmoji');
             const statusText = document.getElementById('statusText');
@@ -431,9 +709,9 @@
                 progressFill.style.background = '#e74c3c';
             }
 
-            // Update expenses list
+            // Expenses list
             const expensesList = document.getElementById('expensesList');
-            if (expenses.length === 0) {
+            if (!expenses || expenses.length === 0) {
                 expensesList.innerHTML = '<p class="no-expenses">No expenses yet!</p>';
             } else {
                 expensesList.innerHTML = expenses.map(e => `
