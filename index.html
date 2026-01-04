@@ -1,9 +1,9 @@
-]<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sujan's Multi-User Spending Tracker</title>
+    <title>Sujan's Spending Tracker</title>
     <style>
         * {
             margin: 0;
@@ -287,25 +287,6 @@
             display: none;
         }
 
-        .profiles-list {
-            margin-top: 6px;
-            max-height: 120px;
-            overflow-y: auto;
-            border-top: 1px solid #eee;
-            padding-top: 6px;
-        }
-
-        .profile-item {
-            font-size: 12px;
-            padding: 3px 0;
-            color: #444;
-        }
-
-        .profile-item span {
-            font-weight: bold;
-            color: #333;
-        }
-
         .current-user {
             font-size: 12px;
             color: #555;
@@ -315,16 +296,6 @@
         .current-user span {
             font-weight: bold;
             color: #333;
-        }
-
-        details summary {
-            cursor: pointer;
-            font-size: 13px;
-            color: #333;
-        }
-
-        details[open] summary {
-            margin-bottom: 6px;
         }
 
         .top-row {
@@ -337,12 +308,21 @@
             font-size: 11px;
             color: #eee;
         }
+
+        a.admin-link {
+            color: #ffe4b5;
+            text-decoration: underline;
+            font-size: 12px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>💰 Sujan's Spending Tracker</h1>
-        <p class="tagline">Multi-user version with admin & login</p>
+        <p class="tagline">
+            User page – ask admin to create your profile first.<br>
+            Admin page: <a class="admin-link" href="/admin.html">/admin.html</a>
+        </p>
 
         <!-- LOGIN CARD -->
         <div class="card" id="loginCard">
@@ -354,31 +334,7 @@
                 <input type="text" id="loginIdOrName" placeholder="e.g., sujan01 or Sujan">
             </div>
             <button class="btn btn-primary" onclick="loginUser()">Login</button>
-            <p class="small-note">Ask the admin for your ID. You can also log in with your exact name.</p>
-        </div>
-
-        <!-- ADMIN CARD -->
-        <div class="card" id="adminCard">
-            <details>
-                <summary><strong>🛠 Admin: Manage Profiles</strong></summary>
-                <div style="margin-top: 8px;">
-                    <div class="input-group">
-                        <label>Profile ID (unique)</label>
-                        <input type="text" id="adminProfileId" placeholder="e.g., user001">
-                    </div>
-                    <div class="input-group">
-                        <label>Profile Name</label>
-                        <input type="text" id="adminProfileName" placeholder="e.g., Sujan">
-                    </div>
-                    <button class="btn btn-secondary" onclick="createProfile()">Create Profile</button>
-
-                    <div class="profiles-list" id="profilesList">
-                        <!-- Profiles will be listed here -->
-                    </div>
-
-                    <p class="small-note">All data is stored on this device only (localStorage).</p>
-                </div>
-            </details>
+            <p class="small-note">Your profile must be created by the admin on the admin page.</p>
         </div>
 
         <!-- MAIN APP SECTION (shown after login) -->
@@ -456,7 +412,7 @@
     </div>
 
     <script>
-        // ---- DATA MODEL ----
+        // ---- SHARED DATA MODEL ----
         // profilesIndex: list of { id, name }
         // each profile data stored as key: 'sujan_profile_' + id
         // value: { id, name, budget, expenses: [ {id, desc, amount, date} ] }
@@ -465,65 +421,6 @@
         let currentProfileId = null;
         let budget = 0;
         let expenses = [];
-
-        // --- INITIAL SETUP ---
-        refreshProfilesList();
-        // appSection stays hidden until login
-
-        // --- ADMIN: CREATE PROFILE ---
-        function createProfile() {
-            const idInput = document.getElementById('adminProfileId');
-            const nameInput = document.getElementById('adminProfileName');
-
-            const id = idInput.value.trim();
-            const name = nameInput.value.trim();
-
-            if (!id || !name) {
-                alert('Please enter both Profile ID and Name.');
-                return;
-            }
-
-            if (profilesIndex.some(p => p.id.toLowerCase() === id.toLowerCase())) {
-                alert('This Profile ID already exists. Choose another.');
-                return;
-            }
-
-            const profile = {
-                id: id,
-                name: name,
-                budget: 0,
-                expenses: []
-            };
-
-            profilesIndex.push({ id: id, name: name });
-            saveProfilesIndex();
-            localStorage.setItem('sujan_profile_' + id, JSON.stringify(profile));
-
-            idInput.value = '';
-            nameInput.value = '';
-            refreshProfilesList();
-            alert('Profile created: ' + name + ' (ID: ' + id + ')');
-        }
-
-        function saveProfilesIndex() {
-            localStorage.setItem('sujan_profiles_index', JSON.stringify(profilesIndex));
-        }
-
-        function refreshProfilesList() {
-            const listDiv = document.getElementById('profilesList');
-            if (!listDiv) return;
-
-            if (!profilesIndex || profilesIndex.length === 0) {
-                listDiv.innerHTML = '<p class="small-note">No profiles yet. Create one above.</p>';
-                return;
-            }
-
-            listDiv.innerHTML = profilesIndex.map(p =>
-                `<div class="profile-item">
-                    <span>${p.id}</span> — ${p.name}
-                </div>`
-            ).join('');
-        }
 
         // --- LOGIN / LOGOUT ---
         function loginUser() {
@@ -534,7 +431,7 @@
             }
 
             if (!profilesIndex || profilesIndex.length === 0) {
-                alert('No profiles found. Admin must create one first.');
+                alert('No profiles found. Admin must create one first on /admin.html.');
                 return;
             }
 
